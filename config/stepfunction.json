@@ -1,0 +1,109 @@
+{
+    "Comment": "An example of using Athena to execute queries in sequence and parallel, with error handling and notifications.",
+    "StartAt": "Start Crawler",
+    "States": {
+      "Start Crawler": {
+        "Type": "Task",
+        "Next": "Get Crawler status",
+        "Parameters": {
+          "Name": "${GLUE_CRAWLER_NAME}"
+        },
+        "Resource": "arn:aws:states:::aws-sdk:glue:startCrawler"
+      },
+      "Get Crawler status": {
+        "Type": "Task",
+        "Parameters": {
+          "Name": "${GLUE_CRAWLER_NAME}"
+        },
+        "Resource": "arn:aws:states:::aws-sdk:glue:getCrawler",
+        "Next": "Check Crawler status"
+      },
+      "Check Crawler status": {
+        "Type": "Choice",
+        "Choices": [
+          {
+            "Variable": "$.Crawler.State",
+            "StringEquals": "RUNNING",
+            "Next": "Wait"
+          }
+        ],
+        "Default": "Map"
+      },
+      "Wait": {
+        "Type": "Wait",
+        "Seconds": 60,
+        "Next": "Get Crawler status"
+      },
+      "Map": {
+        "Type": "Parallel",
+        "ResultSelector": {
+          "Query1Result.$": "$[0].ResultSet.Rows",
+          "Query2Result.$": "$[1].ResultSet.Rows"
+        },
+        "Catch": [
+          {
+            "ErrorEquals": [
+              "States.ALL"
+            ],
+            "Next": "Send query results"
+          }
+        ],
+        "Branches": [
+          {
+            "StartAt": "Start Athena query 1",
+            "States": {
+              "Start Athena query 1": {
+                "Type": "Task",
+                "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+                "Parameters": {
+                  "QueryString": "SELECT * FROM \"AwsDataCatalog\".\"${GLUE_DATABASE}\".\"${GLUE_TABLE}\" limit 10;",
+                  "WorkGroup": "${WORKGROUP_NAME}"
+                },
+                "Next": "Get Athena query 1 results"
+              },
+              "Get Athena query 1 results": {
+                "Type": "Task",
+                "Resource": "arn:aws:states:::athena:getQueryResults",
+                "Parameters": {
+                  "QueryExecutionId.$": "$.QueryExecution.QueryExecutionId"
+                },
+                "End": true
+              }
+            }
+          },
+          {
+            "StartAt": "Start Athena query 2",
+            "States": {
+              "Start Athena query 2": {
+                "Type": "Task",
+                "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+                "Parameters": {
+                    "QueryString": "SELECT * FROM \"AwsDataCatalog\".\"${GLUE_DATABASE}\".\"${GLUE_TABLE}\" WHERE station='Angel'",
+                    "WorkGroup": "${WORKGROUP_NAME}"
+                },
+                "Next": "Get Athena query 2 results"
+              },
+              "Get Athena query 2 results": {
+                "Type": "Task",
+                "Resource": "arn:aws:states:::athena:getQueryResults",
+                "Parameters": {
+                  "QueryExecutionId.$": "$.QueryExecution.QueryExecutionId"
+                },
+                "End": true
+              }
+            }
+          }
+        ],
+        "Next": "Send query results"
+      },
+      "Send query results": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::sns:publish",
+        "Parameters": {
+          "Message.$": "$",
+          "TopicArn": "${SNS_TOPIC_ARN}"
+        },
+        "End": true
+      }
+    }
+  }

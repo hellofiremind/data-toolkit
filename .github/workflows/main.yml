@@ -1,0 +1,28 @@
+name: 'Main'
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - development
+  pull_request:
+    types:
+      - closed
+    branches:
+      - staging
+      - production
+jobs:
+  plan:
+    uses: ./.github/workflows/terraform-command.yml
+    with:
+      command: 'plan'
+    secrets: inherit
+
+  # apply-tf:
+  #   if: github.event.pull_request.merged == true || github.ref == 'refs/heads/development'
+  #   needs: [ plan ]
+  #   uses: ./.github/workflows/terraform-command.yml
+  #   with:
+  #     command: 'apply -auto-approve'
+  #   secrets: inherit
+
+
