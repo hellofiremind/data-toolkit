@@ -1,7 +1,7 @@
-# Firemind Data.core Framework
+# Firemind Data Toolkit Framework
 
-[Report issue](https://github.com/hellofiremind/firemind-data.core/issues/new?assignees=&labels=&template=bug_report.md&title=)
-. [Submit a feature](https://github.com/hellofiremind/firemind-data.core/issues/new?assignees=&labels=&template=feature_request.md&title=)
+[Report issue](https://github.com/hellofiremind/data-toolkit/issues/new?assignees=&labels=&template=bug_report.md&title=)
+. [Submit a feature](https://github.com/hellofiremind/data-toolkit/issues/new?assignees=&labels=&template=feature_request.md&title=)
 
 <details>
   <summary>Table of Contents</summary>
@@ -23,7 +23,7 @@
 **TL;DR**: This framework allows you to get started with a <b> Data Pipeline</b> on AWS using native services and ETL
 Tools. The example in this framework AWS Glue and Amazon Athena for schema generation and data query.
 
-#### Data.core is part of [Firemind's suite of Ignite](https://firemind.com/offerings/ignite/) tools
+#### Data Toolkit is part of [Firemind's suite of Ignite](https://firemind.com/offerings/ignite/) tools
 
 [![Ignite](ignite.png)](https://www.firemind.io/offerings/ignite/data-core/)
 
