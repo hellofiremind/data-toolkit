@@ -23,9 +23,8 @@
 **TL;DR**: This framework allows you to get started with a <b> Data Pipeline</b> on AWS using native services and ETL
 Tools. The example in this framework AWS Glue and Amazon Athena for schema generation and data query.
 
-#### Data Toolkit is part of [Firemind's suite of Ignite](https://firemind.com/offerings/ignite/) tools
-
-[![Ignite](ignite.png)](https://www.firemind.io/offerings/ignite/data-core/)
+#### Data Toolkit is part of [Firemind's Modern Data Strategy](https://www.firemind.com/modern-data-strategy/) tools
+[![Firemind's Modern Data Strategy](wheel.png)](https://www.firemind.com/modern-data-strategy/)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -43,7 +42,7 @@ Tools. The example in this framework AWS Glue and Amazon Athena for schema gener
 
 ## Infrastructure Diagram
 
-[![Architecture](arch.png)](https://www.firemind.io/offerings/ignite/data-core/)
+[![Architecture](arch.png)](https://www.firemind.com/modern-data-strategy/)
 
 ## Initial Setup
 <!-- INITIAL SETUP -->
