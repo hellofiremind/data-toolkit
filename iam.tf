@@ -47,7 +47,9 @@ data "aws_iam_policy_document" "step_function_role_policy_attachment" {
     sid = "S3"
 
     actions = [
-      "s3:*"
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:ListAllMyBuckets"
     ]
 
     resources = [
@@ -60,7 +62,8 @@ data "aws_iam_policy_document" "step_function_role_policy_attachment" {
     sid = "Glue"
 
     actions = [
-      "glue:*"
+      "s3:GetObject",
+      "s3:PutObject"
     ]
 
     resources = [
@@ -89,7 +92,7 @@ data "aws_iam_policy_document" "step_function_role_policy_attachment" {
     sid = "SNS"
 
     actions = [
-      "SNS:*"
+      "SNS:Publish"
     ]
 
     resources = [
